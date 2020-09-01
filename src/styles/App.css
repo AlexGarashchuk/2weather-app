@@ -1,0 +1,18 @@
+body {
+  margin: 0;
+  padding: 0;
+  color: #cfd3ca;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+a{
+  color: grey;
+  text-decoration: none;
+}
+div, input, button, a, h1, h2, h3, h4, h5, h6{
+  box-sizing: 'border-box';
+}
+
+a{
+  color: #000
+}
