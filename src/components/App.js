@@ -66,7 +66,8 @@ function App() {
         setValue={setValue}
         weatherData={weatherData}
       />
-      {!isLoaded && <WeatherData weatherData={weatherData} />}
+      {/* {!isLoaded && <WeatherData weatherData={weatherData} />} */}
+      <WeatherData weatherData={weatherData} isLoaded={isLoaded} />
       <Route path="/weather-details">
         {!isLoaded && <WeatherDetails currentCoord={currentCoord} />}
       </Route>

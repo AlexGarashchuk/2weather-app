@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
@@ -13,9 +13,35 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function WeatherData({ weatherData }) {
+export default function WeatherData({ weatherData, isLoaded }) {
+  // console.log(weatherData);
+
   const classes = useStyles();
-  const [value, setValue] = React.useState();
+  const [value, setValue] = React.useState(0);
+  const [tabs, setTabs] = React.useState([]);
+  const [date, setDate] = React.useState([]);
+
+  function getTabs() {
+    weatherData.map((item) => {
+      setTabs([...tabs, item.name]);
+    });
+  }
+
+  function removedItem() {
+    const temp = [...tabs];
+    temp.splice(0, 1);
+    setTabs(temp);
+  }
+
+  useEffect(() => {
+    getTabs();
+  }, [weatherData]);
+
+  useEffect(() => {
+    if (tabs.length >= 5) {
+      removedItem();
+    }
+  }, [tabs]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -23,34 +49,48 @@ export default function WeatherData({ weatherData }) {
 
   return (
     <div className={classes.root}>
-  
       <AppBar position="static">
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label="wrapped label tabs example"
+          aria-label="simple tabs example"
         >
-          {weatherData.map((item) => (
-            <Tab key={item.name} value={item.name} label={item.name} wrapped />
-          ))}
+          {!isLoaded && tabs.map((tab) => <Tab key={tab} label={tab} />)}
         </Tabs>
-      </AppBar>
+        {!isLoaded &&
+          weatherData.map((item, index) => (
+            <div
+              role="tabpanel"
+              hidden={value !== index}
+              id={`simple-tabpanel-${item.name}`}
+              aria-labelledby={`simple-tab-${item.name}`}
+              key={index}
+            >
+              {console.log(index)}
+              {value === index && (
+                <Box p={3}>
+                  <div className="weather-icon">
+                    <img
+                      style={{ width: "100px" }}
+                      src={`http://openweathermap.org/img/w/${item.weather[0].icon}.png`}
+                    />
+                  </div>
+                  <Typography>{item.name}</Typography>
+                  <Typography>{item.weather[0].main}</Typography>
+                  <Typography>{Math.round(item.main.temp)} &#176;С</Typography>
+                  <Typography>
+                    Feels like{Math.round(item.main.feels_like)} &#176;С
+                  </Typography>
 
-      {weatherData
-        .filter((name) => name.name === value)
-        .map((data) => (
-          <Box p={3} key={data.name} hidden={!data.name === value}>
-            <div className="weather-icon">
-              <img
-                style={{ width: "100px" }}
-                src={`http://openweathermap.org/img/w/${data.weather[0].icon}.png`}
-              />
+                  <Typography>{date}</Typography>
+                  {/* will be update */}
+                  {/* <Typography>Sunrise {item.sys.sunrise}</Typography>
+                  <Typography>Sunset {item.sys.sunset}</Typography> */}
+                </Box>
+              )}
             </div>
-            <Typography>{Math.round(data.main.temp)} &#176;С</Typography>
-            <Typography>Feels like: {data.main.feels_like}</Typography>
-            <Typography>{data.name}</Typography>
-          </Box>
-        ))}
+          ))}
+      </AppBar>
     </div>
   );
 }
