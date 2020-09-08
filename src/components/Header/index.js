@@ -39,14 +39,6 @@ export function Header({ isLoaded }) {
               Home Page
             </Link>
           </Typography>
-
-          {!isLoaded && (
-            <Typography variant="h6">
-              <Link className={classes.link} to="/weather-details">
-                Weather details
-              </Link>
-            </Typography>
-          )}
         </Toolbar>
       </AppBar>
     </div>

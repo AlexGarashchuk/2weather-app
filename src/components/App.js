@@ -1,16 +1,15 @@
-import React, { Component, useState, useEffect } from "react";
+import React, {useState } from "react";
 
 import "../styles/App.css";
 import { Header } from "./Header";
 import { InputField } from "./InputField";
-import { Route, Switch } from "react-router-dom";
+import { Route } from "react-router-dom";
 import WeatherDetails from "./WeatherDetails";
 import axios from "axios";
 import WeatherData from "./WeatherData";
 
 function App() {
   const [value, setValue] = useState("");
-  const [error, setError] = useState(null);
   const [weatherData, setWeatherData] = useState([]);
   const [isLoaded, setIsLoaded] = useState(true);
   const [listPlaces, setListPlaces] = useState([]);
@@ -54,20 +53,20 @@ function App() {
   return (
     <div>
       <Header isLoaded={isLoaded} />
-      <InputField
-        setWeatherData={setWeatherData}
-        setListPlaces={setListPlaces}
-        setCurrentData={setCurrentData}
-        getWeatherData={getWeatherData}
-        value={value}
-        weatherData={weatherData}
-        isLoaded={isLoaded}
-        onChangeValue={onChangeValue}
-        setValue={setValue}
-        weatherData={weatherData}
-      />
-      {/* {!isLoaded && <WeatherData weatherData={weatherData} />} */}
-      <WeatherData weatherData={weatherData} isLoaded={isLoaded} />
+      <Route exact path="/">
+        <InputField
+          setWeatherData={setWeatherData}
+          setListPlaces={setListPlaces}
+          setCurrentData={setCurrentData}
+          getWeatherData={getWeatherData}
+          value={value}
+          weatherData={weatherData}
+          isLoaded={isLoaded}
+          onChangeValue={onChangeValue}
+          setValue={setValue}
+        />
+        <WeatherData weatherData={weatherData} isLoaded={isLoaded} />
+      </Route>
       <Route path="/weather-details">
         {!isLoaded && <WeatherDetails currentCoord={currentCoord} />}
       </Route>

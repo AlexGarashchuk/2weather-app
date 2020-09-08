@@ -5,6 +5,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,12 +15,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function WeatherData({ weatherData, isLoaded }) {
-  // console.log(weatherData);
-
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
   const [tabs, setTabs] = React.useState([]);
-  const [date, setDate] = React.useState([]);
+  const [date] = React.useState([]);
 
   function getTabs() {
     weatherData.map((item) => {
@@ -66,7 +65,6 @@ export default function WeatherData({ weatherData, isLoaded }) {
               aria-labelledby={`simple-tab-${item.name}`}
               key={index}
             >
-              {console.log(index)}
               {value === index && (
                 <Box p={3}>
                   <div className="weather-icon">
@@ -86,6 +84,12 @@ export default function WeatherData({ weatherData, isLoaded }) {
                   {/* will be update */}
                   {/* <Typography>Sunrise {item.sys.sunrise}</Typography>
                   <Typography>Sunset {item.sys.sunset}</Typography> */}
+
+                  <Typography variant="h6">
+                    <Link className={classes.link} to="/weather-details">
+                      Weather details
+                    </Link>
+                  </Typography>
                 </Box>
               )}
             </div>
